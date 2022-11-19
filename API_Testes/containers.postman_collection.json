@@ -1,0 +1,880 @@
+{
+	"info": {
+		"_postman_id": "d5500e3c-bd26-40c7-b4e6-4cef4d1da141",
+		"name": "containers",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19842689"
+	},
+	"item": [
+		{
+			"name": "200 - Mostrar um container",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Deve retornar um container e status 200 OK', () => {\r",
+							"    pm.expect(pm.response.code).to.be.equal(200)\r",
+							"    pm.expect(pm.response.status).to.be.equal('OK')\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/containers/MSCU7325431",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"containers",
+						"MSCU7325431"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 - Mostrar um container (certificar-se)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Deve retornar um container e status 200 OK', () => {\r",
+							"    pm.expect(pm.response.status).to.be.equal('OK')\r",
+							"})\r",
+							"\r",
+							"pm.test('Deve retornar infos de um container (id, numero, tipo, tamanho)', () => {\r",
+							"    const dados = pm.response.json()\r",
+							"    pm.expect(dados).to.be.an('object')\r",
+							"    pm.expect(dados).to.deep.equal({\r",
+							"        \"id\": \"cdc90fcc-a7e6-4cb0-a375-a37baef078dd\",\r",
+							"        \"numero\": \"MSCU7325431\",\r",
+							"        \"tipo\": \"Refrigerated ISO Containers (Reefer)\",\r",
+							"        \"tamanho\": \"40RH\"\r",
+							"    })\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/containers/MSCU7325431",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"containers",
+						"MSCU7325431"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 - Mostrar Container em menos de 0.5s (Performance)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve responder em menos de 500ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/containers/MSCU7325431",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"containers",
+						"MSCU7325431"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "400 - Container Invalido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve retornar formato invalido, BAD REQUEST 400\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.equal(400)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Deve retornar array com erros\", () => {\r",
+							"    const dados = pm.response.json()\r",
+							"    pm.expect(dados).to.have.property(\"erros\")\r",
+							"    pm.expect(dados).to.be.an(\"object\")\r",
+							"    pm.expect(dados.erros).to.be.an(\"array\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Deve retornar a mensagem Formato invalido\", () => {\r",
+							"    const msg = pm.response.json().erros[0]\r",
+							"    pm.expect(msg).to.contain(\"Formato invalido, ex: MSCU7327327\")\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/containers/MSCU732543",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"containers",
+						"MSCU732543"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 - Novo Container Submetido com Sucesso",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve retornar 200 OK\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.equal(200)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"numero\": \"MSCU7325442\",\r\n    \"tipo\": \"Refrigerated ISO Containers (Reefer)\",\r\n    \"tamanho\": \"40RH\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/containers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"containers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "422 - Novo Container Submetido com erro (numero ja existente)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve retornar 422 UNPROCESSABLE ENTITY\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.equal(422)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"numero\": \"MSCU7325442\",\r\n    \"tipo\": \"Refrigerated ISO Containers (Reefer)\",\r\n    \"tamanho\": \"40RH\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/containers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"containers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "400 - Novo Container sem Numero",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve retornar 400 NUMERO OBRIGATORIO\", () => {\r",
+							"    const resp = pm.response.json()\r",
+							"    pm.expect(pm.response.code).to.be.equal(400)\r",
+							"    pm.expect(resp.erros[0]).to.contain(\"O numero eh obrigatorio\")\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tipo\": \"Refrigerated ISO Containers (Reefer)\",\r\n    \"tamanho\": \"40RH\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/containers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"containers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 - Atualizar um Container",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Deve retornar status 200 OK', () => {\r",
+							"    pm.expect(pm.response.code).to.be.equal(200)\r",
+							"    pm.expect(pm.response.status).to.be.equal('OK')\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"numero\": \"SUDU5415415\",\r\n    \"tipo\": \"Refrigerated ISO Containers (Reefer)\",\r\n    \"tamanho\": \"20RH\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/containers/cdc90fcc-a7e6-4cb0-a375-a37baef078dd",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"containers",
+						"cdc90fcc-a7e6-4cb0-a375-a37baef078dd"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 - Deletar um container",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Deve retornar status 200 OK', () => {\r",
+							"    pm.expect(pm.response.code).to.be.equal(200)\r",
+							"    pm.expect(pm.response.status).to.be.equal('OK')\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/containers/SUDU5415415",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"containers",
+						"SUDU5415415"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 - Carregar uma carga para um container",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve retornar 201 CREATED\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.equal(201)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"descricao\": \"Frango Congelado\",\r\n    \"idTipo\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/containers/TRIU8627290/cargas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"containers",
+						"TRIU8627290",
+						"cargas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 - Mostrar Carga de um container",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve retornar 200 OK\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.equal(200)\r",
+							"})\r",
+							"\r",
+							"pm.test('Deve retornar infos de uma carga (id, descricao, tipo, condicao, armazenado)', () => {\r",
+							"    const dados = pm.response.json()\r",
+							"    pm.expect(dados).to.be.an('object')\r",
+							"    pm.expect(dados).to.deep.equal({\r",
+							"        \"id\": 1,\r",
+							"        \"descricao\": \"Frango Congelado\",\r",
+							"        \"tipo\": \"CARNES\",\r",
+							"        \"condicao\": \"DISPONIVEL\",\r",
+							"        \"armazenado\": {\r",
+							"            \"id\": \"d9ef11d8-3aea-4ac2-8f0f-646e98398646\",\r",
+							"            \"numero\": \"TRIU8627290\",\r",
+							"            \"tipo\": \"Refrigerated ISO Containers (Reefer)\",\r",
+							"            \"tamanho\": \"40RH\"\r",
+							"    }\r",
+							"})\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/containers/TRIU8627290/cargas/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"containers",
+						"TRIU8627290",
+						"cargas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "500 - Mostrar Carga que nao pertence ao container",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve retornar 500 Internal Server Error\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.equal(500)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/containers/MSCU3528386/cargas/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"containers",
+						"MSCU3528386",
+						"cargas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "500 - Carregar uma carga para um container ainda carregado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve retornar 500 Internal Server Error\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.equal(500)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"descricao\": \"Frango Congelado\",\r\n    \"idTipo\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/containers/TRIU8627290/cargas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"containers",
+						"TRIU8627290",
+						"cargas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 - Alterar CONDICAO da carga de um conteiner",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve retornar 200 OK\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.equal(200)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"condicao\": \"CONCLUIDA\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/containers/TRIU8627290/cargas/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"containers",
+						"TRIU8627290",
+						"cargas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 - Carregar uma NOVA carga para um container",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve retornar 201 CREATED\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.equal(201)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"descricao\": \"Porco Congelado\",\r\n    \"idTipo\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/containers/TRIU8627290/cargas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"containers",
+						"TRIU8627290",
+						"cargas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 - Mostrar Carga NOVA de um container",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve retornar 200 OK\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.equal(200)\r",
+							"})\r",
+							"\r",
+							"pm.test('Deve retornar infos de uma carga (id, descricao, tipo, condicao, armazenado)', () => {\r",
+							"    const dados = pm.response.json()\r",
+							"    pm.expect(dados).to.be.an('object')\r",
+							"    pm.expect(dados).to.deep.equal({\r",
+							"        \"id\": 2,\r",
+							"        \"descricao\": \"Porco Congelado\",\r",
+							"        \"tipo\": \"CARNES\",\r",
+							"        \"condicao\": \"DISPONIVEL\",\r",
+							"        \"armazenado\": {\r",
+							"            \"id\": \"d9ef11d8-3aea-4ac2-8f0f-646e98398646\",\r",
+							"            \"numero\": \"TRIU8627290\",\r",
+							"            \"tipo\": \"Refrigerated ISO Containers (Reefer)\",\r",
+							"            \"tamanho\": \"40RH\"\r",
+							"        }\r",
+							"    })\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/containers/TRIU8627290/cargas/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"containers",
+						"TRIU8627290",
+						"cargas",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 - Mostrar todas as Cargas de um container",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve retornar 200 OK\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.equal(200)\r",
+							"})\r",
+							"\r",
+							"pm.test('Deve retornar infos de uma carga (id, descricao, tipo, condicao, armazenado)', () => {\r",
+							"    const dados = pm.response.json()\r",
+							"    pm.expect(dados).to.be.an('array')\r",
+							"    pm.expect(dados).to.deep.equal([\r",
+							"        {\r",
+							"            \"id\": 1,\r",
+							"            \"descricao\": \"Frango Congelado\",\r",
+							"            \"tipo\": \"CARNES\",\r",
+							"            \"condicao\": \"CONCLUIDA\",\r",
+							"            \"armazenado\": {\r",
+							"                \"id\": \"d9ef11d8-3aea-4ac2-8f0f-646e98398646\",\r",
+							"                \"numero\": \"TRIU8627290\",\r",
+							"                \"tipo\": \"Refrigerated ISO Containers (Reefer)\",\r",
+							"                \"tamanho\": \"40RH\"\r",
+							"            }\r",
+							"        },\r",
+							"        {\r",
+							"            \"id\": 2,\r",
+							"            \"descricao\": \"Porco Congelado\",\r",
+							"            \"tipo\": \"CARNES\",\r",
+							"            \"condicao\": \"DISPONIVEL\",\r",
+							"            \"armazenado\": {\r",
+							"                \"id\": \"d9ef11d8-3aea-4ac2-8f0f-646e98398646\",\r",
+							"                \"numero\": \"TRIU8627290\",\r",
+							"                \"tipo\": \"Refrigerated ISO Containers (Reefer)\",\r",
+							"                \"tamanho\": \"40RH\"\r",
+							"            }\r",
+							"        }\r",
+							"    ])\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/containers/TRIU8627290/cargas/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"containers",
+						"TRIU8627290",
+						"cargas",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 - Atualizar dados de uma Carga",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve retornar 200 OK\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.equal(200)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"descricao\": \"Porco Resfriado\",\r\n    \"idTipo\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/containers/TRIU8627290/cargas/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"containers",
+						"TRIU8627290",
+						"cargas",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 - Mostrar Carga Editada",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve retornar 200 OK\", () => {\r",
+							"    pm.expect(pm.response.code).to.be.equal(200)\r",
+							"})\r",
+							"\r",
+							"pm.test('Deve retornar infos de uma carga (id, descricao, tipo, condicao, armazenado)', () => {\r",
+							"    const dados = pm.response.json()\r",
+							"    pm.expect(dados).to.be.an('object')\r",
+							"    pm.expect(dados).to.deep.equal({\r",
+							"        \"id\": 2,\r",
+							"        \"descricao\": \"Porco Resfriado\",\r",
+							"        \"tipo\": \"GERAL\",\r",
+							"        \"condicao\": \"DISPONIVEL\",\r",
+							"        \"armazenado\": {\r",
+							"            \"id\": \"d9ef11d8-3aea-4ac2-8f0f-646e98398646\",\r",
+							"            \"numero\": \"TRIU8627290\",\r",
+							"            \"tipo\": \"Refrigerated ISO Containers (Reefer)\",\r",
+							"            \"tamanho\": \"40RH\"\r",
+							"        }\r",
+							"    })\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/containers/TRIU8627290/cargas/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"containers",
+						"TRIU8627290",
+						"cargas",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

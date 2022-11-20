@@ -167,13 +167,39 @@ class MaquinaAguaTest {
       Assertions.assertEquals("agua insuficiente!\n", e.getMessage());
     }
 
-    Assertions.assertEquals(200, maquina.agua(), "quantidade de agua é 19800");
+    Assertions.assertEquals(200, maquina.agua(), "quantidade de agua é 200");
     Assertions.assertEquals(1, maquina.copos200(), "quantidade de copos de 200 é 1");
     Assertions.assertEquals(100, maquina.copos300(), "quantidade de copos de 300 é 100");
 
     System.out.println(maquina.agua() == 200);
     System.out.println(maquina.copos200() == 1);
     System.out.println(maquina.copos300() == 100);
+  }
+
+  @Test
+  @DisplayName("Servir 66 copos de 300ml e servir um de 300ml, deve retorna 0 de agua 99 copos de 200ml e 34 300ml")
+  void testeServir66Copos300mlEum200mlDeveConterZeroAgua99Copos200e34De300() {
+    MaquinaAgua maquina = new MaquinaAgua();
+
+    maquina.abastecerAgua();
+    maquina.abastecerCopo200();
+    maquina.abastecerCopo300();
+
+    try {
+      for (int i = 0; i < 66; i++)
+        maquina.servirCopo300();
+      maquina.servirCopo200();
+    } catch (IllegalArgumentException e) {
+      Assertions.assertEquals("agua insuficiente!\n", e.getMessage());
+    }
+
+    Assertions.assertEquals(0, maquina.agua(), "quantidade de agua é 0");
+    Assertions.assertEquals(99, maquina.copos200(), "quantidade de copos de 200 é 99");
+    Assertions.assertEquals(34, maquina.copos300(), "quantidade de copos de 300 é 34");
+
+    System.out.println(maquina.agua() == 0);
+    System.out.println(maquina.copos200() == 99);
+    System.out.println(maquina.copos300() == 34);
   }
 
 }

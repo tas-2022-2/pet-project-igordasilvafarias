@@ -177,8 +177,8 @@ class MaquinaAguaTest {
   }
 
   @Test
-  @DisplayName("Servir 66 copos de 300ml e servir um de 300ml, deve retorna exceção que nao possui agua sufuciente")
-  void testeServir66Copos200mlEum300mlDeveRetornarExcecaoAguaInsuficiente() {
+  @DisplayName("Servir 66 copos de 300ml e servir um de 300ml, deve retorna 0 de agua 99 copos de 200ml e 34 300ml")
+  void testeServir66Copos300mlEum200mlDeveConterZeroAgua99Copos200e34De300() {
     MaquinaAgua maquina = new MaquinaAgua();
 
     maquina.abastecerAgua();

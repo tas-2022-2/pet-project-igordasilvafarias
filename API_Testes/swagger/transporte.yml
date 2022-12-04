@@ -1,0 +1,90 @@
+swagger: "2.0"
+info:
+  title: API Transportadoras de Containers
+  version: 1.0.0
+  contact:
+    name: Igor Farias
+    email: igor.farias@aluno.riogrande.ifrs.edu.br
+  license:
+    name: Proprietario
+host: example.demo.com
+basePath: /api/v1
+schemes:
+  - http
+  - https
+consumes: 
+  - application/json
+produces:
+  - application/json
+
+paths:
+  /transportadoras:
+    get:
+      tags:
+        - Transportadoras
+      summary: Retorna uma lista de todas as Transportadoras.
+      description: Obtem uma lista dos freteiros em ordem alfabetica.
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: nome
+          description: Parte do nome da transportadora
+          type: string
+          required: false
+      responses:
+        404:
+          description: NOT FOUND, nenhuma transportadora encontrada.
+        200:
+          description: OK, com a lista de Transportadoras.
+          schema:
+            type: array
+            items: 
+              $ref: '#/definitions/Transportadora'
+        206: 
+          description: Lista **parcial** de transportadoras.
+          headers:
+            Content-Range:
+              type: string
+              description: > 
+                Pagina de registros carregados ex: `Content-Range: 21-40/5429`
+          schema:
+            type: array
+            items: 
+              $ref: '#/definitions/Transportadora'
+    post:
+      tags:
+        - Transportadoras
+      summary: Cadastra uma nova transportadoras.
+      consumes: 
+        - application/json
+      parameters:
+        - in: body
+          name: transportadora
+          schema:
+            $ref: '#/definitions/Transportadora'
+      responses:
+        201:
+          description: CREATED, a transportadora foi adicionada.
+
+definitions:
+  Transportadora:
+    type: object
+    properties: 
+      codigo:
+        type: integer
+        description: O codigo da Transportadoras.
+        example: 1234
+        readOnly: true
+      nome: 
+        type: string
+        description: O nome da Transportadoras.
+        example: Transportadora ABC
+      veiculo: 
+        type: string
+        enum:
+          - caminhao rodoviario simples
+          - caminhao rodoviario bitrem
+        example: caminhao rodoviario simples
+    required:
+      - nome

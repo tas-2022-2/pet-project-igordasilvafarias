@@ -1,0 +1,100 @@
+@apikey=0ee602c18aa64175bcb225023220704
+###
+GET https://ifrs.edu.br HTTP/1.1
+
+###
+GET http://api.weatherapi.com/ HTTP/1.1
+
+###
+GET http://api.weatherapi.com/v1/current.json?key={{apikey}}&q=Brazil&aqi=no
+
+###
+GET http://api.weatherapi.com/v1/search.json?key={{apikey}}&q=Brazil
+
+### Novo Container Valido
+POST http://localhost:8080/api/v1/containers HTTP/1.1
+Content-Type: application/json
+
+{
+    "numero": "MSCU7325442",
+    "tipo": "Refrigerated ISO Containers (Reefer)",
+    "tamanho": "40RH"
+}
+
+### Novo Container Invalido
+POST http://localhost:8080/api/v1/containers HTTP/1.1
+Content-Type: application/json
+
+{
+    
+    "tipo": "Refrigerated ISO Containers (Reefer)",
+    "tamanho": "40RH"
+}
+
+### Listar Containers
+GET http://localhost:8080/api/v1/containers HTTP/1.1
+Content-Type: application/json
+
+### Consultar Container pelo Numero
+GET http://localhost:8080/api/v1/containers/MSCU7325431 HTTP/1.1
+Content-Type: application/json
+
+### Consultar Container pelo Numero Invalido (MAIOR)
+GET http://localhost:8080/api/v1/containers/TRIU862729012 HTTP/1.1
+Content-Type: application/json
+
+### Consultar Container pelo Numero Invalido (MENOR)
+GET http://localhost:8080/api/v1/containers/MSCU73254 HTTP/1.1
+Content-Type: application/json
+
+### Deletar Container pelo Numero
+DELETE http://localhost:8080/api/v1/containers/MSCU7325431 HTTP/1.1
+Content-Type: application/json
+
+### Update Container Valido
+PUT http://localhost:8080/api/v1/containers/cdc90fcc-a7e6-4cb0-a375-a37baef078dd HTTP/1.1
+Content-Type: application/json
+
+{
+    "numero": "SUDU5415415",
+    "tipo": "Refrigerated ISO Containers (Reefer)",
+    "tamanho": "20RH"
+}
+
+### Listar Cargas
+GET http://localhost:8080/api/v1/containers/TRIU8627290/cargas/all HTTP/1.1
+
+### Ler Especificacoes da carga
+GET http://localhost:8080/api/v1/containers/MSCU7325431/cargas/1 HTTP/1.1
+
+### Carregar uma carga
+POST http://localhost:8080/api/v1/containers/TRIU8627290/cargas HTTP/1.1
+Content-Type: application/json
+
+{
+    "descricao": "Frango Congelado",
+    "idTipo": 1
+}
+
+### Ler Especificacoes da carga
+GET http://localhost:8080/api/v1/containers/TRIU8627290/cargas/1 HTTP/1.1
+
+### Atualizar carga
+PUT http://localhost:8080/api/v1/containers/TRIU8627290/cargas/1 HTTP/1.1
+Content-Type: application/json
+
+{
+    "descricao": "Porco Resfriado",
+    "idTipo": 0
+}
+
+### Ler Especificacoes da carga atualizada
+GET http://localhost:8080/api/v1/containers/TRIU8627290/cargas/1 HTTP/1.1
+
+### Atualizar CONDICAO carga
+PATCH  http://localhost:8080/api/v1/containers/TRIU8627290/cargas/2 HTTP/1.1
+Content-Type: application/json
+
+{
+    "condicao": "CANCELADA"
+}
